@@ -4,7 +4,7 @@ require('dotenv').config();
 //Load express
 const express = require('express');
 
-// const connectDB = require('./config/db')
+const connectDB = require('./config/db')
 
 //create our expess app
 const app = express()
@@ -12,7 +12,10 @@ const app = express()
 const PORT = 8081;
 
 //connect to our database
-// connectDB();
+connectDB();
+
+// Load the logs model
+const CaptainsLog = require('./models/logs')
 
 // npm install jsx-view-engine react react-dom
 const {createEngine} = require('jsx-view-engine');
@@ -43,7 +46,7 @@ app.get('/', (req, res) => {
 });
 
 // Setup an "create" route
-app.post('/logs', (req, res) => {
+app.post('/logs', async (req, res) =>  {
     // res.send('received')
     if (req.body.shipIsBroken) {
         req.body.shipIsBroken = true
@@ -51,7 +54,19 @@ app.post('/logs', (req, res) => {
         req.body.shipIsBroken = false
     }
 
-    res.send(req.body)
+    //res.send(req.body)
+
+    try {
+        // use the model to interact with db and create a new document in the fruit collection
+        const result = await CaptainsLog.create(req.body)
+        console.log(result)
+        res.render('Show', {result})
+    } catch(err) {
+        console.log('error')
+    }
+    //old way for array
+    // fruits.push(req.body)
+    
 });
 
 app.listen(PORT, () => {
