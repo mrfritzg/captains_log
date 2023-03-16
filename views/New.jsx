@@ -8,8 +8,8 @@ function New() {
                 <label htmlFor="ttl">Title:</label><br />
                 <input type="text" id="ttl" name="title" /><br /><br />
 
-                <label htmlFor="ent">Color:</label><br />
-                <input type="textarea" id="ent" name="entry" /><br /><br />
+                <label htmlFor="ent">Entry:</label><br />
+                <textarea id="ent" name="entry" /><br /><br />
 
                 <label htmlFor="broken">Ship is Broken</label>
                 <input type="checkbox" id="broken" name="shipIsBroken" /><br /><br />

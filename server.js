@@ -36,10 +36,23 @@ app.use(methodOverride('_method'))
 // look for static files (like css) in the public folder
 app.use(express.static('public'))
 
-// Setup an "food" index route
+
+//Setup an "root" route
 app.get('/', (req, res) => {
     res.render('New')
-})
+});
+
+// Setup an "create" route
+app.post('/logs', (req, res) => {
+    // res.send('received')
+    if (req.body.shipIsBroken) {
+        req.body.shipIsBroken = true
+    } else {
+        req.body.shipIsBroken = false
+    }
+
+    res.send(req.body)
+});
 
 app.listen(PORT, () => {
     console.log('Listening on port '+ PORT)
