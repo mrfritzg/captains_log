@@ -11,20 +11,20 @@ function Show(props) {
             <p>{props.result.shipIsBroken ? 'The ship is Broken' : 'The Ship is working'}</p>
             <p><strong>Entry: </strong>{props.result.entry}</p>
 
-            {/* <a href={`/fruits/${props.fruit._id}/edit`}>Edit</a>
+            <a href={`/logs/${props.result._id}/edit`}>Edit</a>
             
             <br /><br />
 
 
-            <form action={`/fruits/${props.fruit._id}?_method=DELETE`} method="POST">
+            <form action={`/logs/${props.result._id}?_method=DELETE`} method="POST">
                 <button>Delete</button>
-            </form> */}
+            </form>
 
             <br />
 
             
 
-            <a href="/">Home</a>
+            <a href="/logs">Home</a>
         </div>
     )
 }

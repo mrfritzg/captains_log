@@ -43,11 +43,6 @@ app.use(express.static('public'))
 // I.N.D.U.C.E.S  ->  an acronym that helps remember how to properly order routes
 // Index, New, Delete, Update, Create, Edit, Show
 
-//Setup an "new" route
-app.get('/logs/new', (req, res) => {
-    res.render('New')
-});
-
 //index route
 app.get('/logs', async (req, res) => {
     // res.render('index')
@@ -66,6 +61,23 @@ app.get('/logs', async (req, res) => {
     }
 });
 
+//Setup an "new" route
+app.get('/logs/new', (req, res) => {
+    res.render('New')
+});
+
+// Setup a "delete" route
+app.delete('/logs/:id', async (req, res) => {
+    try {
+        await CaptainsLog.findByIdAndDelete(req.params.id)
+        res.redirect('/logs')
+    } catch(err) {
+        console.log(err)
+        res.send(err.message)
+    }
+});
+
+
 // Setup an "create" route
 app.post('/logs', async (req, res) => {
     //  res.send('received')
@@ -81,15 +93,26 @@ app.post('/logs', async (req, res) => {
         // use the model to interact with db and create a new document in the fruit collection
         const result = await CaptainsLog.create(req.body)
         console.log(result)
-        // res.redirect('/Show')
-        res.render('Show', { result })
+        res.redirect('/logs')
+        // res.render('Show', { result })
     } catch (err) {
         console.log('error')
     }
 
 });
 
-app.get('logs/show')
+// Setup an "show" route for fruits, attach it to router along with the controller logic
+app.get('/logs/:id', async (req, res)=> {
+    try {
+        const result = await CaptainsLog.findById(req.params.id)
+        console.log(result)
+        res.render('Show', { result })
+    } catch(err) {
+        console.log(err)
+        res.send(err.message)
+    }
+
+});
 
 app.listen(PORT, () => {
     console.log('Listening on port ' + PORT)
