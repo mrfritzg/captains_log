@@ -18,7 +18,7 @@ connectDB();
 const CaptainsLog = require('./models/logs')
 
 // npm install jsx-view-engine react react-dom
-const {createEngine} = require('jsx-view-engine');
+const { createEngine } = require('jsx-view-engine');
 
 // Load the method-override middleware
 const methodOverride = require('method-override')
@@ -40,35 +40,57 @@ app.use(methodOverride('_method'))
 app.use(express.static('public'))
 
 
-//Setup an "root" route
-app.get('/', (req, res) => {
+// I.N.D.U.C.E.S  ->  an acronym that helps remember how to properly order routes
+// Index, New, Delete, Update, Create, Edit, Show
+
+//Setup an "new" route
+app.get('/logs/new', (req, res) => {
     res.render('New')
 });
 
+//index route
+app.get('/logs', async (req, res) => {
+    // res.render('index')
+
+    try {
+        // Use the fruit model to interact with the database
+        // find will get all documents from the fruit collection
+        const results = await CaptainsLog.find()
+        console.log(results)
+
+        // Looks in the views folder for "fruits/Index" and passes { fruits } data to the view (kind of like a server props object)
+        res.render('Index', { results })
+    } catch (err) {
+        console.log(err)
+        res.send(err.message)
+    }
+});
+
 // Setup an "create" route
-app.post('/logs', async (req, res) =>  {
-    // res.send('received')
+app.post('/logs', async (req, res) => {
+    //  res.send('received')
     if (req.body.shipIsBroken) {
         req.body.shipIsBroken = true
     } else {
         req.body.shipIsBroken = false
     }
 
-    //res.send(req.body)
+    // res.send(req.body)
 
     try {
         // use the model to interact with db and create a new document in the fruit collection
         const result = await CaptainsLog.create(req.body)
         console.log(result)
-        res.render('Show', {result})
-    } catch(err) {
+        // res.redirect('/Show')
+        res.render('Show', { result })
+    } catch (err) {
         console.log('error')
     }
-    //old way for array
-    // fruits.push(req.body)
-    
+
 });
 
+app.get('logs/show')
+
 app.listen(PORT, () => {
-    console.log('Listening on port '+ PORT)
+    console.log('Listening on port ' + PORT)
 })

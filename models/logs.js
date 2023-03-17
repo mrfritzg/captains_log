@@ -13,7 +13,7 @@ const logsSchema = new Schema({
         required: true
     },
     entry: { type: String, required: true },
-    shipIsBroken: { type: Boolean, default: true }
+    shipIsBroken: { type: Boolean, required: true, default: true }
     },{ 
     timestamps: true }
     )
