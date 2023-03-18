@@ -77,6 +77,29 @@ app.delete('/logs/:id', async (req, res) => {
     }
 });
 
+// Setup a POST "update" route for updating a specific log
+app.put('/logs/:id', async (req, res) =>{
+    console.log('PUT /fruits/:id')
+    console.log(req.body)
+
+    if (req.body.shipIsBroken) {
+        req.body.shipIsBroken = true
+    } else {
+        req.body.shipIsBroken = false
+    }
+
+    //new method for db connection
+    try {
+    // Find the document in the database by the id, and update it with the request from the body
+    await CaptainsLog.findByIdAndUpdate(req.params.id, req.body)
+    res.redirect(`/logs/${req.params.id}`)
+    } catch(err) {
+        console.log(err)
+        res.send(err.message)
+
+    }
+
+})
 
 // Setup an "create" route
 app.post('/logs', async (req, res) => {
@@ -100,6 +123,20 @@ app.post('/logs', async (req, res) => {
     }
 
 });
+
+// Edit Route
+app.get('/logs/:id/edit', async (req, res) => {
+    console.log('GET /logs/:id/edit')
+    //new method for db connection
+    try {
+        const result = await CaptainsLog.findById(req.params.id)
+        res.render('Edit', { result })
+    } catch(err) {
+        console.log(err)
+        res.send(err.message)
+    }  
+});
+
 
 // Setup an "show" route for fruits, attach it to router along with the controller logic
 app.get('/logs/:id', async (req, res)=> {

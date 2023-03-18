@@ -7,8 +7,8 @@ function Show(props) {
     return (
         <div>
             <h1>Show View</h1>
-            <p>The <strong>{props.result.title}</strong> </p>
-            <p>{props.result.shipIsBroken ? 'The ship is Broken' : 'The Ship is working'}</p>
+            <p><strong>Title: </strong>{props.result.title}</p>
+            <p><strong>Ship&#39;s Status: </strong>{props.result.shipIsBroken ? 'The Issue is ongoing and the Ship is Broken' : 'The Issue has been fixed and the Ship is working'}</p>
             <p><strong>Entry: </strong>{props.result.entry}</p>
 
             <a href={`/logs/${props.result._id}/edit`}>Edit</a>
