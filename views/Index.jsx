@@ -8,7 +8,7 @@ function Index(props) {
     // can't use event listeners in the same way
     return (
         <div>
-            <h1>Index View</h1>
+            <h1>Captains Log (Index View)</h1>
             <ul>
                 {props.results.map((logdata, index) => 
                     <li key={index}>

@@ -6,6 +6,9 @@ const express = require('express');
 
 const connectDB = require('./config/db')
 
+//Load our log route
+const logRoutes = require('./controllers/logs')
+
 //create our expess app
 const app = express()
 
@@ -40,116 +43,54 @@ app.use(methodOverride('_method'))
 app.use(express.static('public'))
 
 
+
+//connect the route/controller logic here
+app.use('/logs', logRoutes);
+
 // I.N.D.U.C.E.S  ->  an acronym that helps remember how to properly order routes
 // Index, New, Delete, Update, Create, Edit, Show
 
 //index route
-app.get('/logs', async (req, res) => {
-    // res.render('index')
+// app.get('/logs', LogController.index);
 
-    try {
-        // Use the fruit model to interact with the database
-        // find will get all documents from the fruit collection
-        const results = await CaptainsLog.find()
-        console.log(results)
+// //Setup an "new" route
+// app.get('/logs/new', LogController.new);
 
-        // Looks in the views folder for "fruits/Index" and passes { fruits } data to the view (kind of like a server props object)
-        res.render('Index', { results })
-    } catch (err) {
-        console.log(err)
-        res.send(err.message)
-    }
-});
+// // Setup a "delete" route
+// app.delete('/logs/:id', LogController.delete );
 
-//Setup an "new" route
-app.get('/logs/new', (req, res) => {
-    res.render('New')
-});
+// // Setup a POST "update" route for updating a specific log
+// app.put('/logs/:id', LogController.update)
 
-// Setup a "delete" route
-app.delete('/logs/:id', async (req, res) => {
-    try {
-        await CaptainsLog.findByIdAndDelete(req.params.id)
-        res.redirect('/logs')
-    } catch(err) {
-        console.log(err)
-        res.send(err.message)
-    }
-});
+// // Setup an "create" route
+// app.post('/logs', LogController.create );
 
-// Setup a POST "update" route for updating a specific log
-app.put('/logs/:id', async (req, res) =>{
-    console.log('PUT /fruits/:id')
-    console.log(req.body)
-
-    if (req.body.shipIsBroken) {
-        req.body.shipIsBroken = true
-    } else {
-        req.body.shipIsBroken = false
-    }
-
-    //new method for db connection
-    try {
-    // Find the document in the database by the id, and update it with the request from the body
-    await CaptainsLog.findByIdAndUpdate(req.params.id, req.body)
-    res.redirect(`/logs/${req.params.id}`)
-    } catch(err) {
-        console.log(err)
-        res.send(err.message)
-
-    }
-
-})
-
-// Setup an "create" route
-app.post('/logs', async (req, res) => {
-    //  res.send('received')
-    if (req.body.shipIsBroken) {
-        req.body.shipIsBroken = true
-    } else {
-        req.body.shipIsBroken = false
-    }
-
-    // res.send(req.body)
-
-    try {
-        // use the model to interact with db and create a new document in the fruit collection
-        const result = await CaptainsLog.create(req.body)
-        console.log(result)
-        res.redirect('/logs')
-        // res.render('Show', { result })
-    } catch (err) {
-        console.log('error')
-    }
-
-});
-
-// Edit Route
-app.get('/logs/:id/edit', async (req, res) => {
-    console.log('GET /logs/:id/edit')
-    //new method for db connection
-    try {
-        const result = await CaptainsLog.findById(req.params.id)
-        res.render('Edit', { result })
-    } catch(err) {
-        console.log(err)
-        res.send(err.message)
-    }  
-});
+// // Edit Route
+// app.get('/logs/:id/edit', async (req, res) => {
+//     console.log('GET /logs/:id/edit')
+//     //new method for db connection
+//     try {
+//         const result = await CaptainsLog.findById(req.params.id)
+//         res.render('Edit', { result })
+//     } catch(err) {
+//         console.log(err)
+//         res.send(err.message)
+//     }  
+// });
 
 
-// Setup an "show" route for fruits, attach it to router along with the controller logic
-app.get('/logs/:id', async (req, res)=> {
-    try {
-        const result = await CaptainsLog.findById(req.params.id)
-        console.log(result)
-        res.render('Show', { result })
-    } catch(err) {
-        console.log(err)
-        res.send(err.message)
-    }
+// // Setup an "show" route for fruits, attach it to router along with the controller logic
+// app.get('/logs/:id', async (req, res)=> {
+//     try {
+//         const result = await CaptainsLog.findById(req.params.id)
+//         console.log(result)
+//         res.render('Show', { result })
+//     } catch(err) {
+//         console.log(err)
+//         res.send(err.message)
+//     }
 
-});
+// });
 
 app.listen(PORT, () => {
     console.log('Listening on port ' + PORT)

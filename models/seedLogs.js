@@ -15,3 +15,5 @@ const seedLogs = [
     shipIsBroken: true
 }
 ]
+
+module.exports = seedLogs;
